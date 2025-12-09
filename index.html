@@ -28,10 +28,150 @@
             font-size: clamp(1.5rem, 5vw, 3rem);
             font-weight: 300;
             letter-spacing: 0.1em;
+            position: relative;
+        }
+
+        /* Glitch effect layers */
+        .glitch {
+            position: relative;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .glitch::before {
+            color: #0ff;
+            z-index: -1;
+        }
+
+        .glitch::after {
+            color: #f0f;
+            z-index: -2;
+        }
+
+        /* Glitch animation */
+        .glitch.glitching::before {
+            opacity: 0.8;
+            animation: glitch-shift-1 0.2s steps(2) forwards;
+        }
+
+        .glitch.glitching::after {
+            opacity: 0.8;
+            animation: glitch-shift-2 0.2s steps(2) forwards;
+        }
+
+        .glitch.glitching {
+            animation: glitch-skew 0.2s steps(2) forwards;
+        }
+
+        @keyframes glitch-shift-1 {
+            0% { transform: translate(-2px, 0); clip-path: inset(20% 0 60% 0); }
+            25% { transform: translate(2px, 0); clip-path: inset(50% 0 30% 0); }
+            50% { transform: translate(-1px, 0); clip-path: inset(10% 0 70% 0); }
+            75% { transform: translate(1px, 0); clip-path: inset(40% 0 40% 0); }
+            100% { transform: translate(0, 0); clip-path: inset(0 0 0 0); }
+        }
+
+        @keyframes glitch-shift-2 {
+            0% { transform: translate(2px, 0); clip-path: inset(60% 0 20% 0); }
+            25% { transform: translate(-2px, 0); clip-path: inset(30% 0 50% 0); }
+            50% { transform: translate(1px, 0); clip-path: inset(70% 0 10% 0); }
+            75% { transform: translate(-1px, 0); clip-path: inset(45% 0 35% 0); }
+            100% { transform: translate(0, 0); clip-path: inset(0 0 0 0); }
+        }
+
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(2deg); }
+            40% { transform: skew(-1deg); }
+            60% { transform: skew(1deg); }
+            80% { transform: skew(-2deg); }
+            100% { transform: skew(0deg); }
+        }
+
+        /* Text swap fade */
+        .glitch.swapping {
+            animation: text-flicker 0.15s ease-in-out;
+        }
+
+        @keyframes text-flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
     </style>
 </head>
 <body>
-    <h1>drift.observer</h1>
+    <h1 class="glitch" data-text="drift.observer">drift.observer</h1>
+
+    <script>
+        const title = document.querySelector('.glitch');
+        const originalText = 'drift.observer';
+        const altTexts = ['who am I?', 'who are you?'];
+
+        function randomInterval(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function triggerGlitch() {
+            title.classList.add('glitching');
+            setTimeout(() => {
+                title.classList.remove('glitching');
+            }, 200);
+        }
+
+        function triggerTextSwap() {
+            const altText = altTexts[Math.floor(Math.random() * altTexts.length)];
+
+            title.classList.add('swapping');
+            setTimeout(() => {
+                title.textContent = altText;
+                title.setAttribute('data-text', altText);
+            }, 75);
+
+            setTimeout(() => {
+                title.classList.remove('swapping');
+            }, 150);
+
+            // Restore original text after a brief moment
+            setTimeout(() => {
+                title.classList.add('swapping');
+                setTimeout(() => {
+                    title.textContent = originalText;
+                    title.setAttribute('data-text', originalText);
+                }, 75);
+                setTimeout(() => {
+                    title.classList.remove('swapping');
+                }, 150);
+            }, randomInterval(300, 600));
+        }
+
+        function scheduleGlitch() {
+            const delay = randomInterval(2000, 5000);
+            setTimeout(() => {
+                triggerGlitch();
+                scheduleGlitch();
+            }, delay);
+        }
+
+        function scheduleTextSwap() {
+            const delay = randomInterval(8000, 15000);
+            setTimeout(() => {
+                triggerTextSwap();
+                scheduleTextSwap();
+            }, delay);
+        }
+
+        // Start the loops
+        scheduleGlitch();
+        scheduleTextSwap();
+    </script>
 </body>
 </html>

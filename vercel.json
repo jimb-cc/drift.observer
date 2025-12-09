@@ -1,0 +1,19 @@
+{
+  "rewrites": [
+    {
+      "source": "/game_docs/:path*",
+      "destination": "/404"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/game_docs/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ]
+}
