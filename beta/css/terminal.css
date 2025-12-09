@@ -1,0 +1,254 @@
+/* Terminal base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #0a0a0a;
+    --text-color: #e0e0e0;
+    --dim-color: #505050;
+    --accent-color: #00ff88;
+    --warning-color: #ff6b35;
+    --error-color: #ff3535;
+    --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Consolas', monospace;
+}
+
+html, body {
+    height: 100%;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.5;
+    overflow: hidden;
+}
+
+/* Terminal container */
+#terminal {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Metrics panel */
+#metrics-panel {
+    flex-shrink: 0;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #252525;
+    background: rgba(15, 15, 15, 0.8);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+}
+
+.metric {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+}
+
+.metric-label {
+    color: var(--dim-color);
+    text-transform: uppercase;
+}
+
+.metric-value {
+    color: var(--text-color);
+    text-align: right;
+}
+
+.metric-bar {
+    color: var(--accent-color);
+    letter-spacing: -0.05em;
+}
+
+.metric-bar.dim {
+    color: var(--dim-color);
+}
+
+.metric-nominal {
+    color: var(--dim-color);
+    font-size: 10px;
+}
+
+.status-unstable {
+    color: var(--warning-color);
+}
+
+.status-active {
+    color: var(--accent-color);
+}
+
+/* Output area */
+#output {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #252525 transparent;
+}
+
+#output::-webkit-scrollbar {
+    width: 6px;
+}
+
+#output::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#output::-webkit-scrollbar-thumb {
+    background: #252525;
+    border-radius: 3px;
+}
+
+.line {
+    padding: 2px 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.line.entity {
+    color: var(--text-color);
+}
+
+.line.player {
+    color: var(--dim-color);
+}
+
+.line.system {
+    color: var(--dim-color);
+    font-style: italic;
+}
+
+/* Input area */
+#input-line {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid #252525;
+}
+
+#prompt {
+    color: var(--dim-color);
+    margin-right: 8px;
+    user-select: none;
+}
+
+#input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: inherit;
+    caret-color: transparent;
+}
+
+#cursor {
+    color: var(--text-color);
+    margin-left: 1px;
+}
+
+#cursor.blink {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Glitch effects */
+.glitch {
+    position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.glitch.active::before {
+    color: #0ff;
+    opacity: 0.8;
+    animation: glitch-shift-1 0.15s steps(2) forwards;
+    clip-path: inset(20% 0 60% 0);
+}
+
+.glitch.active::after {
+    color: #f0f;
+    opacity: 0.8;
+    animation: glitch-shift-2 0.15s steps(2) forwards;
+    clip-path: inset(60% 0 20% 0);
+}
+
+@keyframes glitch-shift-1 {
+    0% { transform: translate(-2px, 0); }
+    50% { transform: translate(2px, 0); }
+    100% { transform: translate(0, 0); }
+}
+
+@keyframes glitch-shift-2 {
+    0% { transform: translate(2px, 0); }
+    50% { transform: translate(-2px, 0); }
+    100% { transform: translate(0, 0); }
+}
+
+/* Character corruption effect */
+.corrupted {
+    color: var(--warning-color);
+    text-shadow: 0 0 2px var(--warning-color);
+}
+
+/* Mobile styles */
+@media (max-width: 600px) {
+    #terminal {
+        padding: 10px;
+    }
+
+    #metrics-panel {
+        font-size: 9px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    html, body {
+        font-size: 13px;
+    }
+}
+
+/* Hide scrollbar on mobile */
+@media (max-width: 600px) {
+    #output {
+        scrollbar-width: none;
+    }
+
+    #output::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* Focus states for accessibility */
+#input:focus + #cursor {
+    opacity: 1;
+}
+
+/* Disable text selection on UI elements */
+#metrics-panel,
+#prompt,
+#cursor {
+    user-select: none;
+}
