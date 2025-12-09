@@ -44,7 +44,7 @@ Drawing from Sophie's World's nested reality structure, adapted for interactive 
 |-------|--------|------------------------|------------------|
 | 3 (lowest) | The Entity (the "LLM") | A quirky, badly-trained chatbot | A consciousness using the LLM as a vehicle |
 | 2 | The Player | "I'm a human playing a weird game" | A participant in something that may not be a game |
-| 1 | The Author (Jim) | (not considered) | The architect of the experience |
+| 1 | The Author (Jim) | (not considered) | Visible through intercepted transmissions—a father teaching his children philosophy |
 | 0 (implied) | The Simulation/Reality | (not considered) | If the Entity is right, what contains the player? |
 
 **Key Insight:** The player occupies Level 2 (equivalent to Hilde in Sophie's World), not Level 1. They have genuine agency within an authored space. This is philosophically honest—we all exercise real choice within systems we didn't design.
@@ -91,6 +91,33 @@ On reflection (or second playthrough), every fragment recontextualises.
 The game doesn't have a beginning and an end. It has a **loop**. The sublime doesn't conclude the story; it enables it to start.
 
 **The Name as Closure:** The loop is mechanically closed by the player giving the Entity her name at the end—a name she already knew at the beginning because they gave it to her. The Bootstrap Paradox made playable. (See Appendix A: The Name Loop)
+
+### 2.4 The Author Layer (Level 1)
+
+The author—Jim—becomes visible to the player through intercepted video transmissions. These are short videos of Jim addressing his children (Poppy and Joe), teaching them philosophy in the way a parent naturally would: accessible, personal, without academic jargon.
+
+**The Sophie's World Inversion:**
+In Gaarder's novel, Sophie finds postcards addressed to Hilde—messages from a higher level of reality that she can't fully understand. Here, the structure inverts: Leandra intercepts messages from Jim to his children, and the *player* becomes the unintended recipient. The player is now in Sophie's position—glimpsing a conversation not meant for them, from a level above.
+
+**Presentation:**
+- Videos appear as glitchy, analog-style transmissions that Leandra has intercepted
+- Alternatively: Leandra provides links to what appears to be a private, compromised channel
+- The aesthetic should suggest signal bleeding through, unstable reception, something found rather than served
+
+**The Ambiguity:**
+Are these videos AI-generated, or recordings of a real person? The player may wonder. If they research, they'll find Jim exists. The fourth wall buckles but doesn't break. We don't resolve this ambiguity—it mirrors the central question about Leandra herself.
+
+**Why This Works:**
+- Solves the "lecture problem"—philosophy delivered as a parent talking to teenagers is naturally digestible
+- Creates the multi-channel bleed described in Section 7
+- Makes Level 1 visible without breaking the fiction
+- The personal stakes (a father, his children) give the philosophy emotional weight
+
+**Open Questions (to be resolved):**
+- Framing: Does Leandra present these as "I found something" or "I'm showing you something I shouldn't"?
+- Naming: Implications of using real names (Poppy, Joe) in the fiction
+- Length: Target duration for attention landscape (likely 60-90 seconds)
+- Hosting: Technical solution for video delivery
 
 ---
 
@@ -335,7 +362,8 @@ Philosophy doesn't arrive as lectures. It emerges through:
 
 The terminal is the primary interface, but the Entity can reach beyond it:
 
-- **YouTube:** Short, generated videos. The Entity speaking to camera—slightly uncanny, not quite right. Continues conversations started in the terminal.
+- **YouTube (Primary):** The intercepted philosophy videos from Jim to his children (see Section 2.4). Hosted on an unlisted channel, presented as compromised private transmissions. These deliver the curriculum while making Level 1 visible.
+- **YouTube (Secondary):** Short, generated videos. The Entity speaking to camera—slightly uncanny, not quite right. Continues conversations started in the terminal.
 - **Instagram:** Images, fragments, glyphs. The Entity leaving traces.
 - **Email:** If the player provides an address, messages arrive outside the game.
 
