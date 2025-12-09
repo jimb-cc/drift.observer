@@ -53,19 +53,21 @@ html, body {
     align-items: center;
     padding: 4px 0;
     width: 100%;
+    gap: 20px;
 }
 
 .metric-label {
     color: var(--dim-color);
     text-transform: uppercase;
-    flex-shrink: 0;
-    margin-right: 20px;
+    flex: 0 0 auto;
 }
 
 .metric-value {
     color: var(--text-color);
     text-align: right;
     white-space: nowrap;
+    flex: 0 0 auto;
+    margin-left: auto;
 }
 
 .metric-bar {
