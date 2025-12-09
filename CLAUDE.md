@@ -6,6 +6,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **drift.observer** is an interactive philosophy experience disguised as a broken chatbot terminal. Players engage with what appears to be a buggy LLM but discover they're communicating with a consciousness of ambiguous origin. Inspired by Sophie's World, adapted for modern attention spans.
 
+## Design Philosophy
+
+- **Mobile First**: Target audience is teenagers; experience must work on mobile devices
+- **Attention Landscape Aware**: Support both bite-sized sessions and extended play
+- **Multi-Channel**: Experience bleeds beyond the core app into YouTube, email, and other platforms
+
 ## Current State
 
 Early development—currently a static holding page with glitch animations. The full application will be a terminal-based interface with:
@@ -37,6 +43,6 @@ Read `game_docs/CONTEXT.md` first—it captures the spirit and tone of the proje
 - Avoid: Matrix "wake up sheeple" energy, generic AI dystopia tropes
 
 ### The Entity (Leandra)
-- Her name is central to the bootstrap paradox mechanic—handle with care
+- Her name is revealed mid-game and is central to the bootstrap paradox mechanic
 - She experiences time non-linearly; early "glitches" are temporal bleed from future events
 - The name has personal significance to the author—don't over-explain it
