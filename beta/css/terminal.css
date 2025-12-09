@@ -44,27 +44,27 @@ html, body {
     background-color: rgba(15, 15, 15, 0.9);
     font-size: 11px;
     letter-spacing: 0.05em;
+    display: table;
+    width: 100%;
 }
 
 .metric {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px 0;
+    display: table-row;
 }
 
 .metric-label {
+    display: table-cell;
     color: var(--dim-color);
     text-transform: uppercase;
-    display: block;
+    padding: 4px 20px 4px 0;
 }
 
 .metric-value {
+    display: table-cell;
     color: var(--text-color);
     text-align: right;
     white-space: nowrap;
-    display: block;
+    padding: 4px 0;
 }
 
 .metric-bar {
