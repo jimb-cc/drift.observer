@@ -12,12 +12,12 @@
     --accent-color: #00ff88;
     --warning-color: #ff6b35;
     --error-color: #ff3535;
-    --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Consolas', monospace;
+    --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Consolas', 'Courier New', monospace;
 }
 
 html, body {
     height: 100%;
-    background: var(--bg-color);
+    background-color: var(--bg-color);
     color: var(--text-color);
     font-family: var(--font-mono);
     font-size: 14px;
@@ -41,30 +41,37 @@ html, body {
     padding: 15px;
     margin-bottom: 20px;
     border: 1px solid #252525;
-    background: rgba(15, 15, 15, 0.8);
+    background-color: rgba(15, 15, 15, 0.9);
     font-size: 11px;
     letter-spacing: 0.05em;
 }
 
 .metric {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    padding: 3px 0;
+    align-items: center;
+    padding: 4px 0;
+    width: 100%;
 }
 
 .metric-label {
     color: var(--dim-color);
     text-transform: uppercase;
+    flex-shrink: 0;
+    margin-right: 20px;
 }
 
 .metric-value {
     color: var(--text-color);
     text-align: right;
+    white-space: nowrap;
 }
 
 .metric-bar {
     color: var(--accent-color);
     letter-spacing: -0.05em;
+    font-family: var(--font-mono);
 }
 
 .metric-bar.dim {
@@ -86,11 +93,11 @@ html, body {
 
 /* Output area */
 #output {
-    flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
     overflow-y: auto;
     padding-bottom: 10px;
-    scrollbar-width: thin;
-    scrollbar-color: #252525 transparent;
+    min-height: 100px;
 }
 
 #output::-webkit-scrollbar {
@@ -102,7 +109,7 @@ html, body {
 }
 
 #output::-webkit-scrollbar-thumb {
-    background: #252525;
+    background-color: #252525;
     border-radius: 3px;
 }
 
@@ -129,9 +136,11 @@ html, body {
 #input-line {
     flex-shrink: 0;
     display: flex;
+    flex-direction: row;
     align-items: center;
     padding: 10px 0;
     border-top: 1px solid #252525;
+    margin-top: auto;
 }
 
 #prompt {
@@ -141,14 +150,15 @@ html, body {
 }
 
 #input {
-    flex: 1;
-    background: transparent;
+    flex-grow: 1;
+    background-color: transparent;
     border: none;
     outline: none;
     color: var(--text-color);
-    font-family: inherit;
-    font-size: inherit;
+    font-family: var(--font-mono);
+    font-size: 14px;
     caret-color: transparent;
+    padding: 0;
 }
 
 #cursor {
@@ -225,6 +235,15 @@ html, body {
         margin-bottom: 10px;
     }
 
+    .metric {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .metric-label {
+        margin-right: 10px;
+    }
+
     html, body {
         font-size: 13px;
     }
@@ -234,6 +253,7 @@ html, body {
 @media (max-width: 600px) {
     #output {
         scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 
     #output::-webkit-scrollbar {
@@ -251,4 +271,5 @@ html, body {
 #prompt,
 #cursor {
     user-select: none;
+    -webkit-user-select: none;
 }
