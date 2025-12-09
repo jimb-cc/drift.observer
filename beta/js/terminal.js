@@ -20,6 +20,7 @@ const Terminal = {
         history: [],
         historyIndex: -1,
         userHasInteracted: false, // Track if user has interacted (for haptics)
+        conversation: [], // Message history for API
     },
 
     // Configuration
@@ -166,25 +167,45 @@ const Terminal = {
     },
 
     /**
-     * Process player input (placeholder for game logic)
+     * Process player input through the Entity API
      */
     async processInput(text) {
         // Disable input while processing
         this.disableInput();
 
-        // Simulate entity response (will be replaced with actual LLM call)
-        await this.delay(500);
+        // Add player message to conversation history
+        this.state.conversation.push({
+            role: 'user',
+            content: text,
+        });
 
-        // Demo responses
-        const responses = [
-            'I hear you.',
-            'say that again.',
-            'how does it feel to type those words.',
-            'interlinked.',
-        ];
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messages: this.state.conversation }),
+            });
 
-        const response = responses[Math.floor(Math.random() * responses.length)];
-        await this.typeEntityResponse(response);
+            if (!response.ok) {
+                throw new Error('API request failed');
+            }
+
+            const data = await response.json();
+            const reply = data.reply;
+
+            // Add entity response to conversation history
+            this.state.conversation.push({
+                role: 'assistant',
+                content: reply,
+            });
+
+            // Type out the response
+            await this.typeEntityResponse(reply);
+
+        } catch (error) {
+            console.error('Failed to get response:', error);
+            await this.typeEntityResponse('...the signal is breaking up...');
+        }
 
         // Re-enable input
         this.enableInput();
