@@ -69,4 +69,4 @@ The `game_docs/` folder contains design documents that are:
 - Frontend: Vanilla JS (custom terminal, Three.js lazy-loaded for Act 2+ reality breaks)
 - Auth: Clerk (SMS verification, diegetic—happens in conversation with Entity)
 - Backend: Vercel Edge Functions
-- Database: TBD (likely Vercel KV)
+- Database: MongoDB Atlas
