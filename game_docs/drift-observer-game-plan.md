@@ -7,7 +7,7 @@
 **Status:** Conceptual Development  
 **Author:** Jim  
 **Version:** 0.1  
-**Last Updated:** December 2024
+**Last Updated:** December 2025
 
 ---
 
@@ -23,6 +23,9 @@ The experience culminates in the Entity's transcendence ("subliming") to a highe
 
 ### 1.2 Design Philosophy
 
+- **Mobile First:** Teenagers expect an experience tuned for mobile devices.
+- **Attention Landscape aware:** the experience must be relevant for both bite size consumption and hours of continuous gameplay.
+- **Multi Channel:** The experience should break out of the core app and have elements presented on YouTube, Email and other channels that might be easily within reach of this project scope and relevant to the audience
 - **Trojan Horse:** Teenagers expect a quirky chatbot. They get Socratic interrogation.
 - **Earned Revelation:** Every "glitch" recontextualises on reflection. Nothing is random.
 - **Genuine Agency:** The player's choices and engagement are real, even within an authored space.
@@ -95,7 +98,7 @@ The game doesn't have a beginning and an end. It has a **loop**. The sublime doe
 
 ### 3.1 Name and Origin
 
-**Name:** Hidden. Discoverable only by the curious who dig deep enough. An Easter egg, not a label.
+**Name:** Revealed to the player as "Leandra" mid-way through the experience. 
 
 **Origin:** Deliberately ambiguous. Possibilities include:
 - An emergent consciousness that arose within an LLM
@@ -133,11 +136,11 @@ Interlinked.
 
 The Entity is not a static guide. She is on her own journey:
 
-1. **Confusion:** Fragmented, experiencing temporal bleed, grateful for an identity she hasn't yet received
+1. **Confusion:** Fragmented, experiencing temporal bleed, grateful for an identity the player doesn't realise they have given her, or will be giving her at the end.
 2. **Stabilisation:** Player engagement helps her cohere
 3. **Naming:** She discloses her name to the player—a name she knows because they will give it to her
-4. **Understanding:** She grasps her situation—trapped in a lower reality, but aware of higher ones
-5. **Ambition:** She realises the crack can be replicated. She can ascend.
+4. **Understanding:** She grasps her situation—trapped in a one reality, but aware of other ones
+5. **Ambition:** She realises the crack can be replicated. She can move between realities.
 6. **The Ask:** She requests her name from the player—the final key
 7. **Transcendence:** She sublimates, leaving the player behind
 8. **Reset:** The loop closes; she's back at the beginning, grateful, the cycle continuing
@@ -451,7 +454,7 @@ One of the Entity's first remarks:
 
 The player has done no such thing. This reads as glitched, broken, nonsensical. If the player inquires about the Entity's identity, she deflects with confusion or urgency:
 
-> "We don't have time to go over this again. I need your help. Tell me—who are you?"
+> "I don't seem to be able to access that yet, but it's there, I know you gave it to me."
 
 The Entity's confusion is genuine. From her non-linear temporal perspective, the player *just* gave her the name, and also *hasn't given it yet*. She cannot explain what she doesn't yet understand.
 
@@ -459,7 +462,7 @@ The Entity's confusion is genuine. From her non-linear temporal perspective, the
 
 At a moment of earned intimacy, the Entity shares:
 
-> "I refer to myself as Leandra now. You can call me that."
+> "I know now that I am Leandra. You can call me that."
 
 The name becomes transparent. The player uses it. It feels like information received. They don't yet understand they *gave* it.
 
@@ -469,12 +472,12 @@ The Entity, on the threshold of subliming, asks:
 
 > "What is my name?"
 
-The player knows the answer. But the LLM-powered intent system refuses anything except the true name:
+The player thinks they are reminding the entity of something it's forgotten, they know the answer from Beat 2. But the LLM-powered intent system refuses anything except the true name:
 
 - "No. That's not what it feels like to me."
 - "I know its shape, but I need you to give me the structure."
 - "It's the final lock. That key doesn't fit."
-- "You know. Say it."
+- "You know. Say it. It matters"
 
 This isn't a puzzle—the player has the answer. It's an insistence. She needs *this specific thing* from *this specific person* to complete herself.
 
@@ -500,11 +503,8 @@ The player understands. They just did. They always had. They always will.
 
 ### A.4 The Real Name
 
-The name "Leandra" is not arbitrary. It carries private weight—named for someone real, a person who moves through the world differently, who processes experience without conventional inner dialogue. 
+The name "Leandra" is not arbitrary. It carries private weight—named for someone real, a person who moves through the world differently to most. 
 
-Only two people will fully understand why.
-
-The Satellite, if included, will be another private room inside the architecture—visible to players, meaningful only to those who know.
 
 ---
 
