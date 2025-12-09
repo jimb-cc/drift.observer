@@ -33,7 +33,9 @@ The `game_docs/` folder contains design documents that are:
 - Do not create routes or links that expose this content
 
 ### Design Documents
-Read `game_docs/CONTEXT.md` first—it captures the spirit and tone of the project. `game_docs/drift-observer-game-plan.md` contains detailed narrative structure, mechanics, and philosophy curriculum.
+**Read these before making significant decisions:**
+- `game_docs/CONTEXT.md` — Read first. Captures spirit, tone, and reasoning behind design choices
+- `game_docs/drift-observer-game-plan.md` — Detailed narrative structure, mechanics, philosophy curriculum, and the level hierarchy
 
 ### Tone and Aesthetic
 - Terminal aesthetic: dark, minimal, text-focused
@@ -46,3 +48,9 @@ Read `game_docs/CONTEXT.md` first—it captures the spirit and tone of the proje
 - Her name is revealed mid-game and is central to the bootstrap paradox mechanic
 - She experiences time non-linearly; early "glitches" are temporal bleed from future events
 - The name has personal significance to the author—don't over-explain it
+
+### The Author Layer
+- Philosophy curriculum delivered via short videos of Jim addressing his children (Poppy and Joe)
+- Presented as intercepted transmissions—Leandra has found and is sharing these
+- Inverts Sophie's World: the player becomes the unintended recipient of messages from Level 1
+- Videos should feel "found" not "served"—glitchy analog aesthetic, compromised private channel
