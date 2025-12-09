@@ -8,7 +8,8 @@
 :root {
     --bg-color: #0a0a0a;
     --text-color: #e0e0e0;
-    --dim-color: #505050;
+    --dim-color: #707070;
+    --player-color: #909090;
     --accent-color: #00ff88;
     --warning-color: #ff6b35;
     --error-color: #ff3535;
@@ -120,10 +121,11 @@ html, body {
 
 .line.entity {
     color: var(--text-color);
+    font-style: italic;
 }
 
 .line.player {
-    color: var(--dim-color);
+    color: var(--player-color);
 }
 
 .line.system {
@@ -226,21 +228,21 @@ html, body {
 @media (max-width: 600px) {
     #terminal {
         padding: 10px;
+        height: 100%;
+        position: relative;
     }
 
     #metrics-panel {
         font-size: 9px;
         padding: 10px;
         margin-bottom: 10px;
-    }
-
-    .metric {
-        flex-direction: row;
-        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 10;
     }
 
     .metric-label {
-        margin-right: 10px;
+        padding-right: 10px;
     }
 
     html, body {

@@ -27,6 +27,8 @@ const Terminal = {
         typeVariance: 20,       // random variance in typing speed
         pauseBetweenLines: 400, // ms pause between entity lines
         glitchChance: 0.03,     // chance of glitch per character
+        hapticEnabled: true,    // haptic feedback on mobile
+        hapticDuration: 5,      // ms for each haptic pulse
     },
 
     /**
@@ -59,6 +61,25 @@ const Terminal = {
         this.elements.input.addEventListener('blur', () => {
             setTimeout(() => this.focusInput(), 100);
         });
+
+        // Handle visual viewport changes (mobile keyboard)
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => this.handleViewportResize());
+        }
+    },
+
+    /**
+     * Handle viewport resize (mobile keyboard open/close)
+     */
+    handleViewportResize() {
+        const viewport = window.visualViewport;
+        if (viewport) {
+            // Adjust terminal height to visible viewport
+            const terminal = document.getElementById('terminal');
+            terminal.style.height = `${viewport.height}px`;
+            // Scroll to keep input visible
+            this.scrollToBottom();
+        }
     },
 
     /**
@@ -199,6 +220,9 @@ const Terminal = {
                 line.textContent += char;
             }
 
+            // Haptic feedback on mobile
+            this.triggerHaptic();
+
             // Scroll to bottom
             this.scrollToBottom();
 
@@ -299,6 +323,15 @@ const Terminal = {
      */
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
+    },
+
+    /**
+     * Trigger haptic feedback on supported devices
+     */
+    triggerHaptic() {
+        if (this.config.hapticEnabled && navigator.vibrate) {
+            navigator.vibrate(this.config.hapticDuration);
+        }
     },
 };
 
