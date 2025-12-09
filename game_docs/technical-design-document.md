@@ -143,11 +143,11 @@ The core innovation is the handoff between two systems:
 | API | Vercel Edge Functions | Low latency, scales automatically, already in ecosystem |
 | Runtime | Node.js / Edge Runtime | |
 | LLM Provider | Anthropic Claude | Thematic alignment (fourth wall buckles), excellent instruction-following |
-| LLM Models | Haiku for intent parsing, Sonnet for voice generation | Cost optimization—use smallest appropriate model |
+| LLM Models | Haiku for intent parsing, Sonnet for text generation | Cost optimization—use smallest appropriate model |
 
 **Notes:**
 - Haiku handles intent classification and simple parsing (fast, cheap)
-- Sonnet for generating Leandra's voice when authored content doesn't cover the situation
+- Sonnet for generating Leandra's *written* responses when authored content doesn't cover the situation
 - Potential internal sponsorship may reduce/eliminate LLM costs—revisit later
 - For vertical slice: accept downtime if any stack component is unavailable (no graceful degradation yet)
 
