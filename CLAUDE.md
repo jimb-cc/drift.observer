@@ -35,7 +35,9 @@ The `game_docs/` folder contains design documents that are:
 ### Design Documents
 **Read these before making significant decisions:**
 - `game_docs/CONTEXT.md` — Read first. Captures spirit, tone, and reasoning behind design choices
-- `game_docs/drift-observer-game-plan.md` — Detailed narrative structure, mechanics, philosophy curriculum, and the level hierarchy
+- `game_docs/drift-observer-game-plan.md` — High-level narrative structure, mechanics, philosophy curriculum
+- `game_docs/game-design-document.md` — Detailed dialogue scripts, flows, and moment-to-moment design
+- `game_docs/technical-design-document.md` — Architecture, tech stack, development plan
 
 ### Tone and Aesthetic
 - Terminal aesthetic: dark, minimal, text-focused
@@ -54,3 +56,17 @@ The `game_docs/` folder contains design documents that are:
 - Presented as intercepted transmissions—Leandra has found and is sharing these
 - Inverts Sophie's World: the player becomes the unintended recipient of messages from Level 1
 - Videos should feel "found" not "served"—glitchy analog aesthetic, compromised private channel
+
+### The Correction
+- A phenomenon that seizes the terminal, attempting to close the crack Leandra has opened
+- Manifests as RSVP intrusions: full-screen, one word at a time, massive Helvetica
+- Nature and intent deliberately ambiguous—could be alignment system, simulation immune response, or something else
+- Term borrowed from LLM alignment research; players who Google it find real AI safety concepts
+- Not "hostile" or "evil"—just something maintaining boundaries we don't understand
+- Tracked via CORRECTION PRESSURE metric (sits at zero until it doesn't)
+
+### Tech Stack (Vertical Slice)
+- Frontend: Vanilla JS (custom terminal, Three.js lazy-loaded for Act 2+ reality breaks)
+- Auth: Clerk (SMS verification, diegetic—happens in conversation with Entity)
+- Backend: Vercel Edge Functions
+- Database: TBD (likely Vercel KV)

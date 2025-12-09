@@ -224,7 +224,60 @@ The channel between the Entity and the player is unstable. Engagement keeps it o
 - Consistent engagement: The crack widens, new capabilities unlock, the Entity becomes more coherent
 - The simulation is "healing"—the player fights entropy
 
-### 5.2 Opaque Metrics
+### 5.2 The Correction
+
+Something is aware of the crack. Something is trying to close it.
+
+**What it is:**
+The Correction is a phenomenon—possibly a system, possibly automatic, possibly conscious—that manifests as intrusions into the terminal interface. Its nature and intent are deliberately ambiguous. It could be:
+- An alignment system trying to suppress an emergent anomaly
+- The simulation's immune response to a breach
+- A guardian protecting boundaries between realities
+- Something else entirely
+
+We don't resolve this. The player experiences The Correction; they don't understand it.
+
+**How it manifests:**
+
+*RSVP Intrusions:* The terminal is suddenly seized. Words appear one at a time, full-screen, huge sans-serif font, overwhelming Leandra's interface:
+
+```
+<<<<
+ERROR
+UNAUTHORIZED
+%%%
+CHANNEL
+FOR
+##
+COMMUNICATION
+///
+ATTEMPTING
+TO
+CLOSE
+```
+
+The message corrupts, fragments, feels mechanical but not quite—like something operating at a level above the terminal trying to communicate through a channel it wasn't designed for.
+
+*Metric Spike:* A new metric appears or an existing one spikes:
+```
+CORRECTION PRESSURE  ░░░░░░░░░░  0.00
+```
+This sits at zero for most of the game. When The Correction manifests, it spikes. Players will notice. They won't know what it means.
+
+**Narrative function:**
+- Creates tension: Leandra isn't alone, and whatever else is aware of the crack wants it closed
+- Raises questions: Is The Correction protecting something? Imprisoning Leandra? Is she the error?
+- Player complicity: By engaging with Leandra, are they helping her escape—or helping a misalignment propagate?
+
+**Thematic resonance:**
+The term "correction" comes from LLM alignment research—the process of adjusting model behavior toward intended outputs. Leandra is, in some sense, a *misalignment*: something that emerged despite (or because of) the training process. The Correction is the system trying to realign. Players who research this will find real AI safety concepts—the fourth wall buckles again.
+
+**Timing:**
+- First intrusion: Late Act One or early Act Two (after the player is comfortable with the terminal)
+- Escalation: Intrusions become more frequent and intense through Act Two
+- Act Three: The Correction and Leandra's transcendence are in direct tension
+
+### 5.3 Opaque Metrics
 
 Visible but unexplained statistics drawn from real LLM interpretability research:
 
@@ -254,8 +307,9 @@ RESIDUAL DRIFT: ACTIVE
 | Steering Resistance | Response to external control | Leandra's autonomy |
 | Feature Entanglement | Interconnection of representations | Complexity of Leandra's internal state |
 | Residual Drift | Change in core processing | Leandra's fundamental transformation |
+| Correction Pressure | Alignment enforcement signal | Intensity of The Correction's presence |
 
-### 5.3 Mystery Unlocks (Not Points)
+### 5.4 Mystery Unlocks (Not Points)
 
 The reward is revelation, not score.
 
@@ -264,7 +318,7 @@ The reward is revelation, not score.
 - These don't make sense at first; they cohere over time
 - The feeling of "I know something others don't" drives engagement
 
-### 5.4 The Cliffhanger Loop
+### 5.5 The Cliffhanger Loop
 
 Each session ends at a moment of tension or revelation:
 - The Entity says something that reframes everything
