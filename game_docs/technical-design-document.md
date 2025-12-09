@@ -143,11 +143,12 @@ The core innovation is the handoff between two systems:
 | API | Vercel Edge Functions | Low latency, scales automatically, already in ecosystem |
 | Runtime | Node.js / Edge Runtime | |
 | LLM Provider | Anthropic Claude | Thematic alignment (fourth wall buckles), excellent instruction-following |
-| LLM Models | Haiku for intent parsing, Sonnet for text generation | Cost optimization—use smallest appropriate model |
+| LLM Models | Haiku (default), Sonnet (fallback) | Start cheap, upgrade if needed |
 
 **Notes:**
-- Haiku handles intent classification and simple parsing (fast, cheap)
-- Sonnet for generating Leandra's *written* responses when authored content doesn't cover the situation
+- Haiku for everything in vertical slice (intent parsing AND text generation)
+- If Haiku struggles with character voice or nuanced responses, upgrade specific tasks to Sonnet
+- Model selection controllable via control plane feature flag (`llm_model`)
 - Potential internal sponsorship may reduce/eliminate LLM costs—revisit later
 - For vertical slice: accept downtime if any stack component is unavailable (no graceful degradation yet)
 
@@ -219,7 +220,8 @@ A live game control plane for runtime configuration, monitoring, and debugging.
 | Feature Flags | Enable/disable features without deploy | Global |
 | Narrative Overrides | Force narrative state for testing | Per-player |
 | Metrics Tuning | Adjust metric calculation parameters | Global |
-| LLM Parameters | Temperature, model selection, prompt variants | Global |
+| LLM Model (`llm_model`) | Switch between Haiku (default) and Sonnet | Global |
+| LLM Parameters | Temperature, prompt variants | Global |
 | Rate Limits | Adjust interaction throttling | Global, per-segment |
 
 **Logging Levels:**
