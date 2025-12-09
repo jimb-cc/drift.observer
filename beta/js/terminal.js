@@ -19,6 +19,7 @@ const Terminal = {
         isTyping: false,
         history: [],
         historyIndex: -1,
+        userHasInteracted: false, // Track if user has interacted (for haptics)
     },
 
     // Configuration
@@ -28,7 +29,7 @@ const Terminal = {
         pauseBetweenLines: 400, // ms pause between entity lines
         glitchChance: 0.03,     // chance of glitch per character
         hapticEnabled: true,    // haptic feedback on mobile
-        hapticDuration: 5,      // ms for each haptic pulse
+        hapticDuration: 2,      // ms for each haptic pulse (subtle)
     },
 
     /**
@@ -57,10 +58,18 @@ const Terminal = {
         // Keep input focused
         document.addEventListener('click', () => this.focusInput());
 
-        // Handle mobile keyboard
+        // Handle mobile keyboard - keep it open
         this.elements.input.addEventListener('blur', () => {
             setTimeout(() => this.focusInput(), 100);
         });
+
+        // Track user interaction for haptic permissions
+        document.addEventListener('touchstart', () => {
+            this.state.userHasInteracted = true;
+        }, { once: true });
+        document.addEventListener('click', () => {
+            this.state.userHasInteracted = true;
+        }, { once: true });
 
         // Handle visual viewport changes (mobile keyboard)
         if (window.visualViewport) {
@@ -282,18 +291,17 @@ const Terminal = {
      */
     enableInput() {
         this.state.inputEnabled = true;
-        this.elements.input.disabled = false;
         this.elements.cursor.classList.add('blink');
         this.focusInput();
     },
 
     /**
-     * Disable player input
+     * Disable player input (but keep keyboard open on mobile)
      */
     disableInput() {
         this.state.inputEnabled = false;
-        this.elements.input.disabled = true;
         this.elements.cursor.classList.remove('blink');
+        // Don't set input.disabled - that dismisses mobile keyboard
     },
 
     /**
@@ -327,9 +335,10 @@ const Terminal = {
 
     /**
      * Trigger haptic feedback on supported devices
+     * Requires user interaction first (browser security policy)
      */
     triggerHaptic() {
-        if (this.config.hapticEnabled && navigator.vibrate) {
+        if (this.config.hapticEnabled && this.state.userHasInteracted && navigator.vibrate) {
             navigator.vibrate(this.config.hapticDuration);
         }
     },
