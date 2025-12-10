@@ -158,17 +158,12 @@ html, body {
     color: var(--text-color);
     font-family: var(--font-mono);
     font-size: 14px;
-    caret-color: transparent;
+    caret-color: var(--accent-color);
     padding: 0;
 }
 
 #cursor {
-    color: var(--text-color);
-    margin-left: 1px;
-}
-
-#cursor.blink {
-    animation: blink 1s step-end infinite;
+    display: none;
 }
 
 @keyframes blink {
