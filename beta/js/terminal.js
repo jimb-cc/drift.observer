@@ -208,10 +208,21 @@ const Terminal = {
             }
 
             const data = await response.json();
-            const reply = data.reply;
+
+            // Update local game state
+            if (data.gameState) {
+                this.state.gameState = data.gameState;
+                console.log('Game state:', data.gameState);
+            }
 
             // Type out the response
-            await this.typeEntityResponse(reply);
+            await this.typeEntityResponse(data.reply);
+
+            // Handle follow-up messages (for narrative beats)
+            if (data.followUp) {
+                await this.delay(1500);
+                await this.typeEntityResponse(data.followUp);
+            }
 
         } catch (error) {
             console.error('Failed to get response:', error);
