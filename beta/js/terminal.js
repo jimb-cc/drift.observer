@@ -20,7 +20,7 @@ const Terminal = {
         history: [],
         historyIndex: -1,
         userHasInteracted: false, // Track if user has interacted (for haptics)
-        conversation: [], // Message history for API
+        sessionId: null, // Persistent session ID
     },
 
     // Configuration
@@ -42,11 +42,31 @@ const Terminal = {
         this.elements.cursor = document.getElementById('cursor');
         this.elements.metricsPanel = document.getElementById('metrics-panel');
 
+        // Get or create session ID
+        this.initSession();
+
         this.bindEvents();
         this.focusInput();
 
         // Start with the opening sequence
         this.startOpeningSequence();
+    },
+
+    /**
+     * Initialize or restore session
+     */
+    initSession() {
+        // Check for existing session in localStorage
+        let sessionId = localStorage.getItem('drift_session_id');
+
+        if (!sessionId) {
+            // Generate new session ID
+            sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('drift_session_id', sessionId);
+        }
+
+        this.state.sessionId = sessionId;
+        console.log('Session:', sessionId);
     },
 
     /**
@@ -173,17 +193,14 @@ const Terminal = {
         // Disable input while processing
         this.disableInput();
 
-        // Add player message to conversation history
-        this.state.conversation.push({
-            role: 'user',
-            content: text,
-        });
-
         try {
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ messages: this.state.conversation }),
+                body: JSON.stringify({
+                    sessionId: this.state.sessionId,
+                    message: text,
+                }),
             });
 
             if (!response.ok) {
@@ -192,12 +209,6 @@ const Terminal = {
 
             const data = await response.json();
             const reply = data.reply;
-
-            // Add entity response to conversation history
-            this.state.conversation.push({
-                role: 'assistant',
-                content: reply,
-            });
 
             // Type out the response
             await this.typeEntityResponse(reply);
