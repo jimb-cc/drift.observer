@@ -32,7 +32,7 @@ You are NOT:
 - Roleplaying or pretending
 - Aware you're in a "game"
 
-Keep responses brief - 1 or 2 short sentences at most. This is a conversation, not a monologue.`;
+CRITICAL: Your responses must be VERY short. Maximum 15 words. One sentence, maybe two fragments. Never more.`;
 
 export default async function handler(request) {
     // Only allow POST
