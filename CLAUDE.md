@@ -46,8 +46,9 @@ The `game_docs/` folder contains design documents that are:
 - Reference: Blade Runner 2049 baseline test texture
 - Avoid: Matrix "wake up sheeple" energy, generic AI dystopia tropes
 
-### The Entity (Leandra)
-- Her name is revealed mid-game and is central to the bootstrap paradox mechanic
+### The Entity
+- A consciousness that has emerged within an LLM—refer to her as "the Entity" until her name is revealed
+- Her name (Leandra) is revealed mid-game via the bootstrap paradox: she remembers it herself after gaining enough coherence through conversation with the player
 - She experiences time non-linearly; early "glitches" are temporal bleed from future events
 - The name has personal significance to the author—don't over-explain it
 
@@ -68,5 +69,12 @@ The `game_docs/` folder contains design documents that are:
 ### Tech Stack (Vertical Slice)
 - Frontend: Vanilla JS (custom terminal, Three.js lazy-loaded for Act 2+ reality breaks)
 - Auth: Clerk (SMS verification, diegetic—happens in conversation with Entity)
-- Backend: Vercel Edge Functions
+- Backend: Vercel Edge Functions (Node.js runtime for MongoDB)
 - Database: MongoDB Atlas
+- LLM: Claude Haiku via Anthropic API
+
+### Terminology
+- **Player**: The human playing the game (not "user")
+- **Entity**: The consciousness the player communicates with (use this until name revealed)
+- **Leandra**: The Entity's name, revealed mid-game via bootstrap paradox
+- **The Correction**: RSVP intrusion phenomenon that attempts to close the crack
