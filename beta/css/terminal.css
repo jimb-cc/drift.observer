@@ -82,29 +82,35 @@ html, body {
     color: var(--warning-color);
 }
 
-/* Metric strobe effects */
+/* Metric strobe effects - AGGRESSIVE */
 @keyframes strobe-positive {
-    0% { background-color: transparent; }
-    20% { background-color: rgba(0, 255, 136, 0.4); }
-    40% { background-color: transparent; }
-    60% { background-color: rgba(0, 255, 136, 0.2); }
-    100% { background-color: transparent; }
+    0% { background-color: rgba(0, 255, 136, 1); box-shadow: 0 0 30px rgba(0, 255, 136, 0.8); }
+    15% { background-color: transparent; box-shadow: none; }
+    30% { background-color: rgba(0, 255, 136, 0.8); box-shadow: 0 0 20px rgba(0, 255, 136, 0.6); }
+    45% { background-color: transparent; box-shadow: none; }
+    60% { background-color: rgba(0, 255, 136, 0.5); box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); }
+    75% { background-color: transparent; box-shadow: none; }
+    85% { background-color: rgba(0, 255, 136, 0.2); }
+    100% { background-color: transparent; box-shadow: none; }
 }
 
 @keyframes strobe-negative {
-    0% { background-color: transparent; }
-    20% { background-color: rgba(255, 53, 53, 0.4); }
-    40% { background-color: transparent; }
-    60% { background-color: rgba(255, 53, 53, 0.2); }
-    100% { background-color: transparent; }
+    0% { background-color: rgba(255, 53, 53, 1); box-shadow: 0 0 30px rgba(255, 53, 53, 0.8); }
+    15% { background-color: transparent; box-shadow: none; }
+    30% { background-color: rgba(255, 53, 53, 0.8); box-shadow: 0 0 20px rgba(255, 53, 53, 0.6); }
+    45% { background-color: transparent; box-shadow: none; }
+    60% { background-color: rgba(255, 53, 53, 0.5); box-shadow: 0 0 15px rgba(255, 53, 53, 0.4); }
+    75% { background-color: transparent; box-shadow: none; }
+    85% { background-color: rgba(255, 53, 53, 0.2); }
+    100% { background-color: transparent; box-shadow: none; }
 }
 
 .metric.strobe-positive {
-    animation: strobe-positive 0.5s ease-out;
+    animation: strobe-positive 0.8s ease-out;
 }
 
 .metric.strobe-negative {
-    animation: strobe-negative 0.5s ease-out;
+    animation: strobe-negative 0.8s ease-out;
 }
 
 .metric-nominal {

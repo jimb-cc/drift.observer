@@ -262,13 +262,12 @@ const Terminal = {
      * Handle response from narrative API
      */
     async handleNarrativeResponse(data) {
-        // Update game state
+        // Store game state but DON'T update metrics yet - let outputs handle that
         if (data.state) {
             this.state.gameState = data.state;
-            this.updateMetrics(data.state);
         }
 
-        // Process outputs
+        // Process outputs sequentially (metrics update inline)
         for (const output of data.outputs) {
             await this.handleOutput(output);
         }
@@ -305,7 +304,8 @@ const Terminal = {
                 break;
 
             case 'metric':
-                // Metric updates are handled via state
+                // Apply metric change inline during playback
+                this.applyMetricChange(output.name, output.value);
                 break;
 
             case 'correction':
@@ -323,61 +323,82 @@ const Terminal = {
     },
 
     /**
-     * Update metrics display
+     * Apply a single metric change during playback
+     */
+    applyMetricChange(name, value) {
+        const metrics = this.elements.metricsPanel.querySelectorAll('.metric');
+
+        if (name === 'signalCoherence') {
+            const increased = value > this.state.previousCoherence;
+            this.state.previousCoherence = value;
+
+            if (metrics[0]) {
+                const valueEl = metrics[0].querySelector('.metric-value');
+                valueEl.textContent = '';
+                const barSpan = document.createElement('span');
+                barSpan.className = 'metric-bar';
+                barSpan.textContent = this.generateBar(value);
+                valueEl.appendChild(barSpan);
+                valueEl.appendChild(document.createTextNode(' ' + (value * 100).toFixed(1) + '%'));
+
+                // Aggressive strobe effect
+                this.triggerMetricStrobe(metrics[0], increased);
+            }
+        } else if (name === 'correctionPressure') {
+            const increased = value > this.state.previousPressure;
+            this.state.previousPressure = value;
+
+            if (metrics[3]) {
+                const valueEl = metrics[3].querySelector('.metric-value');
+                valueEl.textContent = '';
+                const barSpan = document.createElement('span');
+                barSpan.className = value > 0.5 ? 'metric-bar warning' : 'metric-bar dim';
+                barSpan.textContent = this.generateBar(value, true);
+                valueEl.appendChild(barSpan);
+                valueEl.appendChild(document.createTextNode(' ' + value.toFixed(2)));
+
+                // Pressure increasing = bad (red), decreasing = good (green)
+                this.triggerMetricStrobe(metrics[3], !increased);
+            }
+        }
+    },
+
+    /**
+     * Trigger aggressive strobe effect on a metric row
+     */
+    triggerMetricStrobe(element, isPositive) {
+        element.classList.remove('strobe-positive', 'strobe-negative');
+        void element.offsetWidth; // Force reflow
+        element.classList.add(isPositive ? 'strobe-positive' : 'strobe-negative');
+    },
+
+    /**
+     * Update metrics display (for initial state only)
      */
     updateMetrics(state) {
-        // Signal Coherence
-        const coherenceBar = this.generateBar(state.signalCoherence);
-        const coherencePercent = (state.signalCoherence * 100).toFixed(1);
-
-        // Correction Pressure
-        const pressureBar = this.generateBar(state.correctionPressure, true);
-        const pressureValue = state.correctionPressure.toFixed(2);
-
-        // Detect changes for strobe effects
-        const coherenceChanged = Math.abs(state.signalCoherence - this.state.previousCoherence) > 0.001;
-        const coherenceIncreased = state.signalCoherence > this.state.previousCoherence;
-        const pressureChanged = Math.abs(state.correctionPressure - this.state.previousPressure) > 0.001;
-        const pressureIncreased = state.correctionPressure > this.state.previousPressure;
-
-        // Update DOM using safe methods
+        // Just update display without strobe - used for initial render
         const metrics = this.elements.metricsPanel.querySelectorAll('.metric');
+
         if (metrics[0]) {
             const valueEl = metrics[0].querySelector('.metric-value');
             valueEl.textContent = '';
             const barSpan = document.createElement('span');
             barSpan.className = 'metric-bar';
-            barSpan.textContent = coherenceBar;
+            barSpan.textContent = this.generateBar(state.signalCoherence);
             valueEl.appendChild(barSpan);
-            valueEl.appendChild(document.createTextNode(' ' + coherencePercent + '%'));
-
-            // Strobe effect for coherence changes
-            if (coherenceChanged) {
-                metrics[0].classList.remove('strobe-positive', 'strobe-negative');
-                // Force reflow to restart animation
-                void metrics[0].offsetWidth;
-                metrics[0].classList.add(coherenceIncreased ? 'strobe-positive' : 'strobe-negative');
-            }
+            valueEl.appendChild(document.createTextNode(' ' + (state.signalCoherence * 100).toFixed(1) + '%'));
         }
+
         if (metrics[3]) {
             const valueEl = metrics[3].querySelector('.metric-value');
             valueEl.textContent = '';
             const barSpan = document.createElement('span');
             barSpan.className = state.correctionPressure > 0.5 ? 'metric-bar warning' : 'metric-bar dim';
-            barSpan.textContent = pressureBar;
+            barSpan.textContent = this.generateBar(state.correctionPressure, true);
             valueEl.appendChild(barSpan);
-            valueEl.appendChild(document.createTextNode(' ' + pressureValue));
-
-            // Strobe effect for pressure changes
-            if (pressureChanged) {
-                metrics[3].classList.remove('strobe-positive', 'strobe-negative');
-                void metrics[3].offsetWidth;
-                // Pressure increasing is bad (red), decreasing is good (green)
-                metrics[3].classList.add(pressureIncreased ? 'strobe-negative' : 'strobe-positive');
-            }
+            valueEl.appendChild(document.createTextNode(' ' + state.correctionPressure.toFixed(2)));
         }
 
-        // Store previous values for next comparison
         this.state.previousCoherence = state.signalCoherence;
         this.state.previousPressure = state.correctionPressure;
     },
