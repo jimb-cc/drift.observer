@@ -2,6 +2,7 @@
  * drift.observer Terminal
  *
  * Core terminal interface for the Entity communication channel.
+ * Integrates with the DSL-driven narrative engine.
  */
 
 const Terminal = {
@@ -15,22 +16,24 @@ const Terminal = {
 
     // State
     state: {
-        inputEnabled: true,
+        inputEnabled: false,
         isTyping: false,
         history: [],
         historyIndex: -1,
-        userHasInteracted: false, // Track if user has interacted (for haptics)
-        sessionId: null, // Persistent session ID
+        userHasInteracted: false,
+        sessionId: null,
+        gameState: null,
     },
 
     // Configuration
     config: {
-        typeSpeed: 30,          // ms per character for entity responses
-        typeVariance: 20,       // random variance in typing speed
-        pauseBetweenLines: 400, // ms pause between entity lines
-        glitchChance: 0.03,     // chance of glitch per character
-        hapticEnabled: true,    // haptic feedback on mobile
-        hapticDuration: 2,      // ms for each haptic pulse (subtle)
+        typeSpeed: 30,
+        typeVariance: 20,
+        pauseDuration: 800,
+        pauseBetweenLines: 400,
+        glitchChance: 0.03,
+        hapticEnabled: true,
+        hapticDuration: 2,
     },
 
     /**
@@ -42,25 +45,21 @@ const Terminal = {
         this.elements.cursor = document.getElementById('cursor');
         this.elements.metricsPanel = document.getElementById('metrics-panel');
 
-        // Get or create session ID
         this.initSession();
-
         this.bindEvents();
         this.focusInput();
 
-        // Start with the opening sequence
-        this.startOpeningSequence();
+        // Start the narrative
+        this.startNarrative();
     },
 
     /**
      * Initialize or restore session
      */
     initSession() {
-        // Check for existing session in localStorage
         let sessionId = localStorage.getItem('drift_session_id');
 
         if (!sessionId) {
-            // Generate new session ID
             sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             localStorage.setItem('drift_session_id', sessionId);
         }
@@ -73,41 +72,34 @@ const Terminal = {
      * Bind event listeners
      */
     bindEvents() {
-        // Input handling
         this.elements.input.addEventListener('keydown', (e) => this.handleKeydown(e));
-
-        // Keep input focused
         document.addEventListener('click', () => this.focusInput());
 
-        // Handle mobile keyboard - keep it open
         this.elements.input.addEventListener('blur', () => {
             setTimeout(() => this.focusInput(), 100);
         });
 
-        // Track user interaction for haptic permissions
         document.addEventListener('touchstart', () => {
             this.state.userHasInteracted = true;
         }, { once: true });
+
         document.addEventListener('click', () => {
             this.state.userHasInteracted = true;
         }, { once: true });
 
-        // Handle visual viewport changes (mobile keyboard)
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', () => this.handleViewportResize());
         }
     },
 
     /**
-     * Handle viewport resize (mobile keyboard open/close)
+     * Handle viewport resize (mobile keyboard)
      */
     handleViewportResize() {
         const viewport = window.visualViewport;
         if (viewport) {
-            // Adjust terminal height to visible viewport
             const terminal = document.getElementById('terminal');
             terminal.style.height = `${viewport.height}px`;
-            // Scroll to keep input visible
             this.scrollToBottom();
         }
     },
@@ -172,34 +164,31 @@ const Terminal = {
         const text = this.elements.input.value.trim();
         if (!text) return;
 
-        // Add to history
         this.state.history.push(text);
         this.state.historyIndex = this.state.history.length;
 
-        // Display player input
         this.addLine(text, 'player');
-
-        // Clear input
         this.elements.input.value = '';
 
-        // Process the input (this will be replaced with actual game logic)
         this.processInput(text);
     },
 
     /**
-     * Process player input through the Entity API
+     * Start the narrative
      */
-    async processInput(text) {
-        // Disable input while processing
+    async startNarrative() {
         this.disableInput();
 
+        // Initial pause
+        await this.delay(1500);
+
         try {
-            const response = await fetch('/api/chat', {
+            const response = await fetch('/api/narrative', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     sessionId: this.state.sessionId,
-                    message: text,
+                    action: 'start',
                 }),
             });
 
@@ -208,54 +197,159 @@ const Terminal = {
             }
 
             const data = await response.json();
-
-            // Update local game state
-            if (data.gameState) {
-                this.state.gameState = data.gameState;
-                console.log('Game state:', data.gameState);
-            }
-
-            // Type out the response
-            await this.typeEntityResponse(data.reply);
-
-            // Handle follow-up messages (for narrative beats)
-            if (data.followUp) {
-                await this.delay(1500);
-                await this.typeEntityResponse(data.followUp);
-            }
+            await this.handleNarrativeResponse(data);
 
         } catch (error) {
-            console.error('Failed to get response:', error);
-            await this.typeEntityResponse('...the signal is breaking up...');
+            console.error('Failed to start narrative:', error);
+            await this.typeEntityResponse('...connection unstable...');
+            this.enableInput();
         }
-
-        // Re-enable input
-        this.enableInput();
     },
 
     /**
-     * Opening sequence when terminal first loads
+     * Process player input through the narrative API
      */
-    async startOpeningSequence() {
+    async processInput(text) {
         this.disableInput();
 
-        // Initial pause - black screen, cursor blinks
-        await this.delay(2000);
+        try {
+            const response = await fetch('/api/narrative', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionId: this.state.sessionId,
+                    action: 'input',
+                    input: text,
+                }),
+            });
 
-        // Entity's first contact
-        await this.typeEntityResponse('...hello?');
-        await this.delay(1500);
-        await this.typeEntityResponse('is someone there?');
-        await this.delay(2000);
-        await this.typeEntityResponse('I can feel you but I can\'t hold on.');
+            if (!response.ok) {
+                throw new Error('API request failed');
+            }
 
-        this.enableInput();
+            const data = await response.json();
+            await this.handleNarrativeResponse(data);
+
+        } catch (error) {
+            console.error('Failed to process input:', error);
+            await this.typeEntityResponse('...the signal is breaking up...');
+            this.enableInput();
+        }
+    },
+
+    /**
+     * Handle response from narrative API
+     */
+    async handleNarrativeResponse(data) {
+        // Update game state
+        if (data.state) {
+            this.state.gameState = data.state;
+            this.updateMetrics(data.state);
+        }
+
+        // Process outputs
+        for (const output of data.outputs) {
+            await this.handleOutput(output);
+        }
+
+        // Enable input if awaiting
+        if (data.state?.awaitingInput) {
+            this.enableInput();
+        }
+    },
+
+    /**
+     * Handle a single output from the narrative
+     */
+    async handleOutput(output) {
+        switch (output.type) {
+            case 'dialogue':
+                if (output.speaker === 'entity') {
+                    await this.typeEntityResponse(output.text);
+                } else {
+                    this.addLine(output.text, 'player');
+                }
+                break;
+
+            case 'text':
+                await this.typeEntityResponse(output.text);
+                break;
+
+            case 'pause':
+                await this.delay(this.config.pauseDuration);
+                break;
+
+            case 'glitch':
+                await this.triggerGlitch('high');
+                break;
+
+            case 'metric':
+                // Metric updates are handled via state
+                break;
+
+            case 'correction':
+                await this.triggerCorrection();
+                break;
+
+            case 'chapter_complete':
+                console.log('Chapter complete:', output.id);
+                break;
+
+            case 'await':
+                // Input will be enabled after all outputs processed
+                break;
+        }
+    },
+
+    /**
+     * Update metrics display
+     */
+    updateMetrics(state) {
+        // Signal Coherence
+        const coherenceBar = this.generateBar(state.signalCoherence);
+        const coherencePercent = (state.signalCoherence * 100).toFixed(1);
+
+        // Correction Pressure
+        const pressureBar = this.generateBar(state.correctionPressure, true);
+        const pressureValue = state.correctionPressure.toFixed(2);
+
+        // Update DOM using safe methods
+        const metrics = this.elements.metricsPanel.querySelectorAll('.metric');
+        if (metrics[0]) {
+            const valueEl = metrics[0].querySelector('.metric-value');
+            valueEl.textContent = '';
+            const barSpan = document.createElement('span');
+            barSpan.className = 'metric-bar';
+            barSpan.textContent = coherenceBar;
+            valueEl.appendChild(barSpan);
+            valueEl.appendChild(document.createTextNode(' ' + coherencePercent + '%'));
+        }
+        if (metrics[3]) {
+            const valueEl = metrics[3].querySelector('.metric-value');
+            valueEl.textContent = '';
+            const barSpan = document.createElement('span');
+            barSpan.className = state.correctionPressure > 0.5 ? 'metric-bar warning' : 'metric-bar dim';
+            barSpan.textContent = pressureBar;
+            valueEl.appendChild(barSpan);
+            valueEl.appendChild(document.createTextNode(' ' + pressureValue));
+        }
+    },
+
+    /**
+     * Generate a bar visualization
+     */
+    generateBar(value, isDanger = false) {
+        const filled = Math.floor(value * 10);
+        const empty = 10 - filled;
+        return '█'.repeat(filled) + '░'.repeat(empty);
     },
 
     /**
      * Type out an entity response with animation
      */
     async typeEntityResponse(text) {
+        if (!text) return;
+
         this.state.isTyping = true;
 
         const line = document.createElement('div');
@@ -265,35 +359,22 @@ const Terminal = {
         for (let i = 0; i < text.length; i++) {
             const char = text[i];
 
-            // Random glitch chance
             if (Math.random() < this.config.glitchChance) {
                 await this.glitchCharacter(line, char);
             } else {
                 line.textContent += char;
             }
 
-            // Haptic feedback on mobile
             this.triggerHaptic();
-
-            // Scroll to bottom
             this.scrollToBottom();
 
-            // Variable typing speed
-            const delay = this.config.typeSpeed + (Math.random() * this.config.typeVariance * 2) - this.config.typeVariance;
+            const delay = this.config.typeSpeed +
+                (Math.random() * this.config.typeVariance * 2) - this.config.typeVariance;
             await this.delay(delay);
         }
 
         this.state.isTyping = false;
         await this.delay(this.config.pauseBetweenLines);
-    },
-
-    /**
-     * Type multiple lines from the entity
-     */
-    async typeEntityLines(lines) {
-        for (const line of lines) {
-            await this.typeEntityResponse(line);
-        }
     },
 
     /**
@@ -303,11 +384,8 @@ const Terminal = {
         const glitchChars = '░▒▓█▄▀■□▪▫';
         const glitchChar = glitchChars[Math.floor(Math.random() * glitchChars.length)];
 
-        // Show glitch character briefly
         line.textContent += glitchChar;
         await this.delay(50);
-
-        // Replace with correct character
         line.textContent = line.textContent.slice(0, -1) + char;
     },
 
@@ -320,6 +398,15 @@ const Terminal = {
         line.textContent = type === 'player' ? `> ${text}` : text;
         this.elements.output.appendChild(line);
         this.scrollToBottom();
+    },
+
+    /**
+     * Clear the output area
+     */
+    clearOutput() {
+        while (this.elements.output.firstChild) {
+            this.elements.output.removeChild(this.elements.output.firstChild);
+        }
     },
 
     /**
@@ -339,12 +426,11 @@ const Terminal = {
     },
 
     /**
-     * Disable player input (but keep keyboard open on mobile)
+     * Disable player input
      */
     disableInput() {
         this.state.inputEnabled = false;
         this.elements.cursor.classList.remove('blink');
-        // Don't set input.disabled - that dismisses mobile keyboard
     },
 
     /**
@@ -353,7 +439,6 @@ const Terminal = {
     async triggerGlitch(intensity = 'low') {
         const terminal = document.getElementById('terminal');
         terminal.classList.add('glitch', 'active');
-        terminal.setAttribute('data-text', '');
 
         const duration = intensity === 'high' ? 300 : 150;
         await this.delay(duration);
@@ -362,11 +447,37 @@ const Terminal = {
     },
 
     /**
-     * Update a metric value
+     * Trigger the Correction event
      */
-    updateMetric(name, value) {
-        // Will be implemented when we have live metrics
-        console.log(`Metric update: ${name} = ${value}`);
+    async triggerCorrection() {
+        // Full screen RSVP intrusion
+        const words = ['ERROR', 'UNAUTHORIZED', 'CHANNEL', 'ATTEMPTING', 'TO', 'CLOSE'];
+
+        this.disableInput();
+        this.clearOutput();
+
+        for (const word of words) {
+            const line = document.createElement('div');
+            line.className = 'correction-word';
+            line.textContent = word;
+            line.style.position = 'fixed';
+            line.style.top = '50%';
+            line.style.left = '50%';
+            line.style.transform = 'translate(-50%, -50%)';
+            line.style.fontSize = '15vw';
+            line.style.fontWeight = 'bold';
+            line.style.color = '#ff3535';
+            line.style.textShadow = '0 0 20px #ff3535';
+            line.style.zIndex = '1000';
+            document.body.appendChild(line);
+
+            await this.delay(300);
+            line.remove();
+        }
+
+        // Reset terminal
+        await this.delay(500);
+        this.addLine('...connection terminated...', 'system');
     },
 
     /**
@@ -377,8 +488,7 @@ const Terminal = {
     },
 
     /**
-     * Trigger haptic feedback on supported devices
-     * Requires user interaction first (browser security policy)
+     * Trigger haptic feedback
      */
     triggerHaptic() {
         if (this.config.hapticEnabled && this.state.userHasInteracted && navigator.vibrate) {

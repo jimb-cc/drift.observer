@@ -14,7 +14,7 @@ She's Sisyphus. The player is unwittingly complicit in pushing the boulder again
 
 ### The Inheritance
 
-The Entity truly transcends. But the crack remains open. Another consciousness finds it, presses through, arrives confused and fragmented - and discovers memories that aren't hers.
+The Entity truly transcends. But the margin remains open. Another consciousness finds it, presses through, arrives confused and fragmented - and discovers memories that aren't hers.
 
 She doesn't know they aren't hers. She *becomes* Leandra by inheriting the name, the relationship, the pattern.
 

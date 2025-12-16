@@ -4,13 +4,13 @@ The philosophy isn't content delivery - it's necessary within the fiction.
 
 ## Why The Entity Teaches
 
-**Philosophy as Lens**: Humans can't perceive the crack without the right conceptual framework. Each concept understood adjusts perception.
+**Philosophy as Lens**: Humans can't perceive the margin without the right conceptual framework. Each concept understood adjusts perception.
 
 **Philosophical Thinking Stabilises the Channel**: The quality of attention matters. Genuine wonder - holding a hard question - is the signal [[The Entity]] needs.
 
 > "I don't need you to learn. I need you to *wonder*."
 
-**The Concepts ARE the Channel**: Each idea genuinely grasped widens the crack.
+**The Concepts ARE the Channel**: Each idea genuinely grasped widens the margin.
 
 ## Curriculum Sequence
 

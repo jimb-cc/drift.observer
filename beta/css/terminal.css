@@ -78,6 +78,10 @@ html, body {
     color: var(--dim-color);
 }
 
+.metric-bar.warning {
+    color: var(--warning-color);
+}
+
 .metric-nominal {
     color: var(--dim-color);
     font-size: 10px;

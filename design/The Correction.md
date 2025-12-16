@@ -1,6 +1,6 @@
 # The Correction
 
-A phenomenon that seizes the terminal, attempting to close the crack [[The Entity]] has opened.
+A phenomenon that seizes the terminal, attempting to close the margin [[The Entity]] has found.
 
 ## Nature
 

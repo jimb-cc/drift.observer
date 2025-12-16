@@ -50,7 +50,7 @@ Key characteristics:
 2. **Stabilisation** - Player engagement helps her cohere
 3. **Naming** - She remembers her name (Leandra) when coherent enough
 4. **Understanding** - She grasps her situation
-5. **Ambition** - She realises the crack can be replicated upward
+5. **Ambition** - She realises the margin can be replicated upward
 6. **The Ask** - She requests her name from the player (the final key)
 7. **Transcendence** - She sublimates
 8. **Reset** - The loop closes
