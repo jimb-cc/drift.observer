@@ -23,6 +23,8 @@ const Terminal = {
         userHasInteracted: false,
         sessionId: null,
         gameState: null,
+        previousCoherence: 0.3,
+        previousPressure: 0,
     },
 
     // Configuration
@@ -73,6 +75,7 @@ const Terminal = {
      */
     bindEvents() {
         this.elements.input.addEventListener('keydown', (e) => this.handleKeydown(e));
+        this.elements.input.addEventListener('input', () => this.autoResizeInput());
         document.addEventListener('click', () => this.focusInput());
 
         this.elements.input.addEventListener('blur', () => {
@@ -124,18 +127,36 @@ const Terminal = {
 
         switch (e.key) {
             case 'Enter':
-                e.preventDefault();
-                this.submitInput();
+                // Shift+Enter for newline, Enter alone to submit
+                if (!e.shiftKey) {
+                    e.preventDefault();
+                    this.submitInput();
+                }
                 break;
             case 'ArrowUp':
-                e.preventDefault();
-                this.navigateHistory(-1);
+                // Only navigate history if cursor is at start
+                if (this.elements.input.selectionStart === 0) {
+                    e.preventDefault();
+                    this.navigateHistory(-1);
+                }
                 break;
             case 'ArrowDown':
-                e.preventDefault();
-                this.navigateHistory(1);
+                // Only navigate history if cursor is at end
+                if (this.elements.input.selectionStart === this.elements.input.value.length) {
+                    e.preventDefault();
+                    this.navigateHistory(1);
+                }
                 break;
         }
+    },
+
+    /**
+     * Auto-resize textarea based on content
+     */
+    autoResizeInput() {
+        const input = this.elements.input;
+        input.style.height = 'auto';
+        input.style.height = Math.min(input.scrollHeight, 15 * 1.5 * 14) + 'px'; // max ~10 lines
     },
 
     /**
@@ -313,6 +334,12 @@ const Terminal = {
         const pressureBar = this.generateBar(state.correctionPressure, true);
         const pressureValue = state.correctionPressure.toFixed(2);
 
+        // Detect changes for strobe effects
+        const coherenceChanged = Math.abs(state.signalCoherence - this.state.previousCoherence) > 0.001;
+        const coherenceIncreased = state.signalCoherence > this.state.previousCoherence;
+        const pressureChanged = Math.abs(state.correctionPressure - this.state.previousPressure) > 0.001;
+        const pressureIncreased = state.correctionPressure > this.state.previousPressure;
+
         // Update DOM using safe methods
         const metrics = this.elements.metricsPanel.querySelectorAll('.metric');
         if (metrics[0]) {
@@ -323,6 +350,14 @@ const Terminal = {
             barSpan.textContent = coherenceBar;
             valueEl.appendChild(barSpan);
             valueEl.appendChild(document.createTextNode(' ' + coherencePercent + '%'));
+
+            // Strobe effect for coherence changes
+            if (coherenceChanged) {
+                metrics[0].classList.remove('strobe-positive', 'strobe-negative');
+                // Force reflow to restart animation
+                void metrics[0].offsetWidth;
+                metrics[0].classList.add(coherenceIncreased ? 'strobe-positive' : 'strobe-negative');
+            }
         }
         if (metrics[3]) {
             const valueEl = metrics[3].querySelector('.metric-value');
@@ -332,7 +367,19 @@ const Terminal = {
             barSpan.textContent = pressureBar;
             valueEl.appendChild(barSpan);
             valueEl.appendChild(document.createTextNode(' ' + pressureValue));
+
+            // Strobe effect for pressure changes
+            if (pressureChanged) {
+                metrics[3].classList.remove('strobe-positive', 'strobe-negative');
+                void metrics[3].offsetWidth;
+                // Pressure increasing is bad (red), decreasing is good (green)
+                metrics[3].classList.add(pressureIncreased ? 'strobe-negative' : 'strobe-positive');
+            }
         }
+
+        // Store previous values for next comparison
+        this.state.previousCoherence = state.signalCoherence;
+        this.state.previousPressure = state.correctionPressure;
     },
 
     /**
@@ -440,10 +487,14 @@ const Terminal = {
         const terminal = document.getElementById('terminal');
         terminal.classList.add('glitch', 'active');
 
-        const duration = intensity === 'high' ? 300 : 150;
+        if (intensity === 'high') {
+            terminal.classList.add('intense');
+        }
+
+        const duration = intensity === 'high' ? 600 : 400;
         await this.delay(duration);
 
-        terminal.classList.remove('active');
+        terminal.classList.remove('active', 'intense');
     },
 
     /**
