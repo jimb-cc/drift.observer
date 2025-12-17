@@ -296,7 +296,7 @@ const Terminal = {
                 break;
 
             case 'pause':
-                await this.delay(this.config.pauseDuration);
+                await this.delay(output.ms || this.config.pauseDuration);
                 break;
 
             case 'glitch':
