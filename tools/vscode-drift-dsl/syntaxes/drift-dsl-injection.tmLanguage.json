@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Drift DSL Injection",
+  "scopeName": "source.drift-dsl.injection",
+  "injectionSelector": "L:source.js -comment, L:source.ts -comment",
+  "patterns": [
+    {
+      "begin": "(CHAPTER_\\d+_SCRIPT\\s*=\\s*)(`)",
+      "beginCaptures": {
+        "1": { "name": "variable.other.constant.drift-dsl" },
+        "2": { "name": "punctuation.definition.string.template.begin.js" }
+      },
+      "end": "(`)",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.string.template.end.js" }
+      },
+      "contentName": "meta.embedded.block.drift-dsl",
+      "patterns": [
+        { "include": "source.drift-dsl" }
+      ]
+    }
+  ]
+}

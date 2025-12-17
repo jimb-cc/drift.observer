@@ -1,0 +1,38 @@
+{
+  "name": "drift-dsl",
+  "displayName": "Drift Observer DSL",
+  "description": "Syntax highlighting for drift.observer narrative DSL",
+  "version": "0.1.0",
+  "publisher": "drift-observer",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "drift-dsl",
+        "aliases": ["Drift DSL", "drift-dsl"],
+        "extensions": [".dsl"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "drift-dsl",
+        "scopeName": "source.drift-dsl",
+        "path": "./syntaxes/drift-dsl.tmLanguage.json"
+      },
+      {
+        "scopeName": "source.drift-dsl.injection",
+        "path": "./syntaxes/drift-dsl-injection.tmLanguage.json",
+        "injectTo": ["source.js", "source.ts"],
+        "embeddedLanguages": {
+          "meta.embedded.block.drift-dsl": "drift-dsl"
+        }
+      }
+    ]
+  }
+}

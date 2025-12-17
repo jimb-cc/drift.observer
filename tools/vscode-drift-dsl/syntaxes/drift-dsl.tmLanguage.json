@@ -1,0 +1,102 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Drift DSL",
+  "scopeName": "source.drift-dsl",
+  "patterns": [
+    { "include": "#block-start" },
+    { "include": "#block-end" },
+    { "include": "#directive" },
+    { "include": "#speaker" },
+    { "include": "#inline-tag" },
+    { "include": "#variable" },
+    { "include": "#emphasis" }
+  ],
+  "repository": {
+    "block-start": {
+      "match": "(:::)(\\w+)(\\{)([^}]*)(\\})?",
+      "captures": {
+        "1": { "name": "punctuation.definition.block.drift-dsl" },
+        "2": { "name": "entity.name.tag.block.drift-dsl" },
+        "3": { "name": "punctuation.definition.attributes.begin.drift-dsl" },
+        "4": { "patterns": [{ "include": "#attributes" }] },
+        "5": { "name": "punctuation.definition.attributes.end.drift-dsl" }
+      }
+    },
+    "block-end": {
+      "match": "^\\s*(:::)\\s*$",
+      "captures": {
+        "1": { "name": "punctuation.definition.block.end.drift-dsl" }
+      }
+    },
+    "directive": {
+      "match": "(@)(\\w+)(\\{[^}]*\\})?(:)\\s*(.*)",
+      "captures": {
+        "1": { "name": "punctuation.definition.directive.drift-dsl" },
+        "2": { "name": "keyword.control.directive.drift-dsl" },
+        "3": { "name": "entity.other.attribute-name.drift-dsl" },
+        "4": { "name": "punctuation.separator.drift-dsl" },
+        "5": { "name": "string.unquoted.directive-value.drift-dsl" }
+      }
+    },
+    "speaker": {
+      "match": "(\\*\\*)(\\w+)(:)(\\*\\*)\\s*(.*)",
+      "captures": {
+        "1": { "name": "punctuation.definition.bold.drift-dsl" },
+        "2": { "name": "entity.name.function.speaker.drift-dsl" },
+        "3": { "name": "punctuation.separator.drift-dsl" },
+        "4": { "name": "punctuation.definition.bold.drift-dsl" },
+        "5": { "name": "string.quoted.dialogue.drift-dsl" }
+      }
+    },
+    "inline-tag": {
+      "match": "(<)([-\\w]+)(\\s+[^>]*)?(/?)(>)",
+      "captures": {
+        "1": { "name": "punctuation.definition.tag.begin.drift-dsl" },
+        "2": { "name": "entity.name.tag.inline.drift-dsl" },
+        "3": { "patterns": [{ "include": "#tag-attributes" }] },
+        "4": { "name": "punctuation.definition.tag.self-close.drift-dsl" },
+        "5": { "name": "punctuation.definition.tag.end.drift-dsl" }
+      }
+    },
+    "variable": {
+      "match": "(\\{)(\\w+)(\\})",
+      "captures": {
+        "1": { "name": "punctuation.definition.variable.begin.drift-dsl" },
+        "2": { "name": "variable.other.drift-dsl" },
+        "3": { "name": "punctuation.definition.variable.end.drift-dsl" }
+      }
+    },
+    "emphasis": {
+      "match": "(\\*)([^*]+)(\\*)",
+      "captures": {
+        "1": { "name": "punctuation.definition.italic.drift-dsl" },
+        "2": { "name": "markup.italic.drift-dsl" },
+        "3": { "name": "punctuation.definition.italic.drift-dsl" }
+      }
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "match": "(\\w+)(=)(\"[^\"]*\"|'[^']*')",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.drift-dsl" },
+            "2": { "name": "punctuation.separator.key-value.drift-dsl" },
+            "3": { "name": "string.quoted.attribute-value.drift-dsl" }
+          }
+        }
+      ]
+    },
+    "tag-attributes": {
+      "patterns": [
+        {
+          "match": "(\\w+)(=)(\"[^\"]*\"|'[^']*'|[\\w.+-]+)",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.drift-dsl" },
+            "2": { "name": "punctuation.separator.key-value.drift-dsl" },
+            "3": { "name": "string.quoted.attribute-value.drift-dsl" }
+          }
+        }
+      ]
+    }
+  }
+}
